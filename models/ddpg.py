@@ -1,4 +1,5 @@
 import numpy as np
+import os
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -29,6 +30,11 @@ class Actor(nn.Module):
         for hidden_layer in self.hidden_layers:
             x = F.relu(hidden_layer(x))
         return self.output_activation_fn(self.output_layer(x))
+    
+    def load_checkpoint(self):
+        checkpoint_path = os.path.join('checkpoints', 'model_actor.pth')
+        state_dict = torch.load(checkpoint_path)
+        self.load_state_dict(state_dict)
 
     def reset_parameters(self):
         for hidden_layer in self.hidden_layers:
