@@ -58,11 +58,9 @@ class Agent():
         for state, action, reward, next_state, done in zip(states, actions, rewards, next_states, dones):
             self.memory.add(state, action, reward, next_state, done)
 
-        self.t_step += 1
-
         # Learn, if enough samples are available in memory
         if len(self.memory) > BATCH_SIZE:
-            experiences = self.memory.sample()
+            indexes, experiences, is_weights = self.memory.sample()
             self.learn(experiences, GAMMA)
 
     def act(self, state, add_noise=False):
